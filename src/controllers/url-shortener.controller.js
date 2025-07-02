@@ -60,7 +60,6 @@ export const deleteURLShortener = async (req, res) => {
     const data = await deleteURLShortenerService(code, shortCodeData);
 
     res.status(200).json({
-        message: 'URL Deleted Successfully',
-        data,
+        message: 'URL Deleted Successfully'
     });
 };

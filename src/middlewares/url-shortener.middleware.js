@@ -9,7 +9,7 @@ export async function checkExistCode(req, res, next) {
     const result = await pool.query(getByCodeQuery, [code]);
 
     if (!result.rows.length)
-        throw new HTTPError(404, 'Code Not Found');
+        throw new HTTPError(404, 'Shortened URL not found');
     
     req.shortCodeData = result.rows[0];
     next();
