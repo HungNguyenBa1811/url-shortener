@@ -1,4 +1,7 @@
 import express from 'express';
+import { rateLimit } from 'express-rate-limit';
+
+import { rateLimitConfig } from './config/rateLimit.js';
 import { asyncHandler } from '../utils/async-handler.js';
 import {
     createURLShortener,
@@ -84,7 +87,12 @@ appRouter.get('/ping', (req, res) => {
  *       400:
  *         description: Invalid input / URL Validation error
  */
-appRouter.post('/shorten', asyncHandler(validate(urlShortenerRequest)), asyncHandler(createURLShortener));
+appRouter.post(
+    '/shorten',
+    rateLimit(rateLimitConfig),
+    asyncHandler(validate(urlShortenerRequest)),
+    asyncHandler(createURLShortener),
+);
 
 /**
  * @swagger

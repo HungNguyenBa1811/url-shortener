@@ -2,6 +2,7 @@ import express from 'express';
 import helmet from 'helmet';
 import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
+
 import appRouter from './routes/index.js';
 import pool from './db.js';
 import { PORT } from './constant.js';
