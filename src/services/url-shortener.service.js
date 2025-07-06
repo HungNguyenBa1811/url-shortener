@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+
 import pool from '../db.js';
 import { BASE_URL } from '../constant.js';
 import {
@@ -7,7 +8,7 @@ import {
     updateWithReturnQuery,
     updateAccessCountQuery,
     deleteQuery,
-} from '../queries/url-shortener.queries.js';
+} from '../queries/url-shortener.query.js';
 
 const randomLength68 = () => Math.floor(Math.random() * 3) + 6;
 
@@ -33,7 +34,7 @@ export const createURLShortenerService = async (url) => {
         shortCode: super_duper_short_code,
         createdAt,
         updatedAt,
-    }
+    };
 };
 
 export const getURLShortenerByCodeService = async (code, data) => {
@@ -41,13 +42,13 @@ export const getURLShortenerByCodeService = async (code, data) => {
     await pool.query(updateAccessCountQuery, [data.access_count, code]);
     const { access_count, ...no_access_count } = data;
     return no_access_count;
-}
+};
 
 export const updateURLShortenerService = async (code, url, data) => {
     await pool.query(updateQuery, [url, code]);
     return {
         id: data.id,
-        url: `${BASE_URL}/${code}`,
+        url: `${BASE_URL}/shorten/${code}`,
         shortCode: code,
         createdAt: data.created_at,
         updatedAt: new Date(),
@@ -58,9 +59,9 @@ export const deleteURLShortenerService = async (code, data) => {
     await pool.query(deleteQuery, [code]);
     return {
         id: data.id,
-        url: `${BASE_URL}/${code}`,
+        url: `${BASE_URL}/shorten/${code}`,
         shortCode: code,
         createdAt: data.created_at,
         updatedAt: new Date(),
     };
-}
+};

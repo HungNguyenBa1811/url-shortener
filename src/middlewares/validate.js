@@ -3,8 +3,9 @@ import HTTPError from "../utils/error.helper.js";
 export function validate(schema) {
     return async function (req, res, next) {
         try {
-            await schema.validateAsync(req.body, {
-                abortEarly: false
+            const toValidate = req.method === 'GET' ? req.query : req.body;
+            await schema.validateAsync(toValidate, {
+                abortEarly: false,
             });
             next();
         } catch (err) {
