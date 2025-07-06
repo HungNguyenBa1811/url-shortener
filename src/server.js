@@ -17,6 +17,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(cors());
 app.use(logger);
+app.set('trust proxy', 1); // Trust first proxy for rate limiting
 app.use('/', appRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 app.use(errorHandler);
