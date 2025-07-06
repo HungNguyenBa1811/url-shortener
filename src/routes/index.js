@@ -8,6 +8,8 @@ import {
     updateURLShortener,
 } from '../controllers/url-shortener.controller.js';
 import { checkExistCode } from '../middlewares/url-shortener.middleware.js';
+import { validate } from '../middlewares/validate.js';
+import { urlShortenerRequest } from '../requests/url-shortener.request.js';
 
 const appRouter = express.Router();
 
@@ -34,7 +36,6 @@ appRouter.get('/ping', (req, res) => {
         message: 'pong!',
     });
 });
-
 
 /**
  * @swagger
@@ -81,9 +82,9 @@ appRouter.get('/ping', (req, res) => {
  *                       type: string
  *                       format: date-time
  *       400:
- *         description: Invalid input
+ *         description: Invalid input / URL Validation error
  */
-appRouter.post('/shorten', asyncHandler(createURLShortener));
+appRouter.post('/shorten', asyncHandler(validate(urlShortenerRequest)), asyncHandler(createURLShortener));
 
 /**
  * @swagger

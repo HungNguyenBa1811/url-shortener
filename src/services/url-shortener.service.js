@@ -29,7 +29,7 @@ export const createURLShortenerService = async (url) => {
     const { createdAt, updatedAt } = pushCommit.rows[0];
     return {
         id,
-        url: `${BASE_URL}/${super_duper_short_code}`,
+        url: `${BASE_URL}/shorten/${super_duper_short_code}`,
         shortCode: super_duper_short_code,
         createdAt,
         updatedAt,
