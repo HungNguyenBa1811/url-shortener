@@ -1,7 +1,7 @@
 import express from 'express';
 import { rateLimit } from 'express-rate-limit';
 
-import { rateLimitConfig } from './config/rateLimit.js';
+import { rateLimitConfig, rateLimitGetConfig } from '../config/rateLimit.js';
 import { asyncHandler } from '../utils/async-handler.js';
 import {
     createURLShortener,
@@ -136,7 +136,12 @@ appRouter.post(
  *       404:
  *         description: Shortened URL not found
  */
-appRouter.get('/shorten/:code', asyncHandler(checkExistCode), asyncHandler(getURLShortenerByCode));
+appRouter.get(
+    '/shorten/:code',
+    rateLimit(rateLimitGetConfig),
+    asyncHandler(checkExistCode),
+    asyncHandler(getURLShortenerByCode),
+);
 
 /**
  * @swagger
@@ -182,7 +187,12 @@ appRouter.get('/shorten/:code', asyncHandler(checkExistCode), asyncHandler(getUR
  *       404:
  *         description: Shortened URL not found
  */
-appRouter.get('/shorten/:code/stats', asyncHandler(checkExistCode), asyncHandler(getURLShortenerStats));
+appRouter.get(
+    '/shorten/:code/stats',
+    rateLimit(rateLimitGetConfig),
+    asyncHandler(checkExistCode),
+    asyncHandler(getURLShortenerStats),
+);
 
 /**
  * @swagger
@@ -236,7 +246,12 @@ appRouter.get('/shorten/:code/stats', asyncHandler(checkExistCode), asyncHandler
  *       404:
  *         description: Shortened URL not found
  */
-appRouter.put('/shorten/:code', asyncHandler(checkExistCode), asyncHandler(updateURLShortener));
+appRouter.put(
+    '/shorten/:code',
+    rateLimit(rateLimitConfig),
+    asyncHandler(checkExistCode),
+    asyncHandler(updateURLShortener),
+);
 
 /**
  * @swagger
@@ -265,6 +280,11 @@ appRouter.put('/shorten/:code', asyncHandler(checkExistCode), asyncHandler(updat
  *       404:
  *         description: Shortened URL not found
  */
-appRouter.delete('/shorten/:code', asyncHandler(checkExistCode), asyncHandler(deleteURLShortener));
+appRouter.delete(
+    '/shorten/:code',
+    rateLimit(rateLimitConfig),
+    asyncHandler(checkExistCode),
+    asyncHandler(deleteURLShortener),
+);
 
 export default appRouter;
