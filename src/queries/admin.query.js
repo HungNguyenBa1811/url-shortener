@@ -12,6 +12,14 @@ export const getAllStatsQuery = `
     FROM urls;
 `;
 
+export const searchLinksQuery = `
+    SELECT * FROM urls
+    WHERE urls.original_url ILIKE $1
+    OR urls.short_code ILIKE $1
+    ORDER BY urls.created_at DESC
+    LIMIT 5;
+`;
+
 export const forceDeleteURLQuery = `
     DELETE FROM urls WHERE short_code = $1;
 `;

@@ -1,4 +1,9 @@
-import { getAllURLsService, getAllStatsService, forceDeleteURLService } from '../services/admin.service.js';
+import {
+    getAllURLsService,
+    getAllStatsService,
+    forceDeleteURLService,
+    searchLinksService,
+} from '../services/admin.service.js';
 
 export const getAllURLsController = async (req, res) => {
     const { page, per_page, order } = req.query;
@@ -15,6 +20,15 @@ export const getAllStatsController = async (req, res) => {
         message: "Get URLs' Stats successfully",
         data
     });
+}
+
+export const searchLinksController = async (req, res) => {
+    const { q } = req.query;
+    const data = await searchLinksService(q);
+    res.status(200).json({
+        message: "Search links successfully",
+        data
+    })
 }
 
 export const forceDeleteURLController = async (req, res) => {

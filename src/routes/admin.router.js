@@ -7,6 +7,7 @@ import { getURLRequest } from '../requests/admin.request.js';
 import {
     getAllStatsController,
     getAllURLsController,
+    searchLinksController,
     forceDeleteURLController,
 } from '../controllers/admin.controller.js';
 import { checkExistCode } from '../middlewares/url-shortener.middleware.js';
@@ -109,6 +110,51 @@ adminRouter.get(
  *         description: Admin Authorization failed
  */
 adminRouter.get('/stats', asyncHandler(getAllStatsController));
+
+/**
+ * @swagger
+ * /admin/search:
+ *   get:
+ *     summary: Search for shortened URLs
+ *     description: Returns up to 5 most relevant shortened URLs matching the search query. Admin access required.
+ *     tags:
+ *       - Administrator
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: q
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Search query string
+ *     responses:
+ *       200:
+ *         description: A list of up to 5 relevant URLs
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               maxItems: 5
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   short_code:
+ *                     type: string
+ *                   original_url:
+ *                     type: string
+ *                   created_at:
+ *                     type: string
+ *                     format: date-time
+ *                   updated_at:
+ *                     type: string
+ *                     format: date-time
+ *       403:
+ *         description: Admin Authorization failed
+ */
+adminRouter.use('/search', asyncHandler(searchLinksController));
 
 /**
  * @swagger
